@@ -1,12 +1,12 @@
-/* src/models/reader.js */
+/* src/models/book.js */
 module.exports = (connection, DataTypes) => {
   const schema = {
     title: DataTypes.STRING,
     author: DataTypes.STRING,
     genre: DataTypes.STRING,
-    ISBN,
+    ISBN: DataTypes.STRING,
   };
 
-  const ReaderModel = connection.define("Reader", schema);
-  return ReaderModel;
+  const BookModel = connection.define("Book", schema);
+  return BookModel;
 };
