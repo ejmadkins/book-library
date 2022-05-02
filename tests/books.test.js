@@ -35,6 +35,40 @@ describe("/books", () => {
         expect(newBookRecord.genre).to.equal("Sci-Fi");
         expect(newBookRecord.ISBN).to.equal("0-671-62964-6");
       });
+      it("validates unique title", async () => {
+        books = await Book.create({
+          title: "The Hitchhiker's Guide to the Galaxy",
+          author: "Douglas Adams",
+          genre: "Sci-Fi",
+          ISBN: "0-671-62964-6",
+        });
+
+        const response = await request(app).post("/books").send({
+          title: "The Hitchhiker's Guide to the Galaxy2",
+          author: "Douglas Adams",
+          genre: "Sci-Fi",
+          ISBN: "0-671-62964-6",
+        });
+
+        expect(response.status).to.equal(400);
+      });
+      it("validates unique author", async () => {
+        books = await Book.create({
+          title: "The Hitchhiker's Guide to the Galaxy",
+          author: "Douglas Adams",
+          genre: "Sci-Fi",
+          ISBN: "0-671-62964-6",
+        });
+
+        const response = await request(app).post("/books").send({
+          title: "The Hitchhiker's Guide to the Galaxy",
+          author: "Douglas Adams2",
+          genre: "Sci-Fi",
+          ISBN: "0-671-62964-6",
+        });
+
+        expect(response.status).to.equal(400);
+      });
     });
   });
 
@@ -42,6 +76,8 @@ describe("/books", () => {
     let books;
 
     beforeEach(async () => {
+      // added to ensure tests work with validation
+      await Book.destroy({ where: {} });
       books = await Promise.all([
         Book.create({
           title: "The Hitchhiker's Guide to the Galaxy",
@@ -50,14 +86,14 @@ describe("/books", () => {
           ISBN: "0-671-62964-6",
         }),
         Book.create({
-          title: "The Hitchhiker's Guide to the Galaxy",
-          author: "Douglas Adams",
+          title: "The Hitchhiker's Guide to the Galaxy2",
+          author: "Douglas Adams2",
           genre: "Sci-Fi",
           ISBN: "0-671-62964-6",
         }),
         Book.create({
-          title: "The Hitchhiker's Guide to the Galaxy",
-          author: "Douglas Adams",
+          title: "The Hitchhiker's Guide to the Galaxy3",
+          author: "Douglas Adams3",
           genre: "Sci-Fi",
           ISBN: "0-671-62964-6",
         }),

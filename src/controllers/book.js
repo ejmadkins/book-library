@@ -2,8 +2,19 @@ const { Book } = require("../models");
 
 exports.create = async (req, res) => {
   // platform example missing await
-  const newBook = await Book.create(req.body);
-  res.status(201).json(newBook);
+  try {
+    const newBook = await Book.create(req.body);
+    res.status(201).json(newBook);
+  } catch (err) {
+    if (err.name === "SequelizeUniqueConstraintError") {
+      res.status(400).json({
+        success: false,
+        msg: err.errors.map((e) => e.message),
+      });
+    } else {
+      res.sendStatus(500).send(err);
+    }
+  }
 };
 
 exports.read = async (_, res) => {
