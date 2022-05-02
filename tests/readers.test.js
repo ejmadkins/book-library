@@ -29,6 +29,24 @@ describe("/readers", () => {
         expect(newReaderRecord.email).to.equal("future_ms_darcy@gmail.com");
         expect(newReaderRecord.password).to.equal("password");
       });
+      it("validates user email input", async () => {
+        const response = await request(app).post("/readers").send({
+          name: "Elizabeth Bennet",
+          email: "future_ms_darcy",
+          password: "password",
+        });
+
+        expect(response.status).to.equal(400);
+      });
+      it("validates password length", async () => {
+        const response = await request(app).post("/readers").send({
+          name: "Elizabeth Bennet",
+          email: "future_ms_darcy@gmail.com",
+          password: "passwords",
+        });
+
+        expect(response.status).to.equal(400);
+      });
     });
   });
 
