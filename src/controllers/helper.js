@@ -41,7 +41,6 @@ const getItems = async (res, model) => {
 
 const getItemById = async (res, model, id) => {
   const Model = getModel(model);
-  console.log(id);
 
   const item = await Model.findByPk(id);
 
