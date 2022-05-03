@@ -16,6 +16,12 @@ module.exports = (connection, DataTypes) => {
       type: DataTypes.STRING,
     },
   };
-  const BookModel = connection.define("Book", schema);
+  const BookModel = connection.define("Book", schema, {
+    scopes: {
+      excludePassword: {
+        attributes: { exclude: ["password"] },
+      },
+    },
+  });
   return BookModel;
 };

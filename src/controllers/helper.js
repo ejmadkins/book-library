@@ -26,7 +26,7 @@ const createItem = async (res, model, item) => {
 const getItems = async (res, model) => {
   const Model = getModel(model);
 
-  const items = await Model.findAll();
+  const items = await Model.scope("excludePassword").findAll();
 
   if (!items) {
     res.sendStatus(404);
@@ -38,7 +38,7 @@ const getItems = async (res, model) => {
 const getItemById = async (res, model, id) => {
   const Model = getModel(model);
 
-  const item = await Model.findByPk(id);
+  const item = await Model.scope("excludePassword").findByPk(id);
 
   if (!item) {
     // changed from sendStatus to status and added the error key
