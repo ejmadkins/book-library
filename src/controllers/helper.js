@@ -16,14 +16,10 @@ const createItem = async (res, model, item) => {
     const newItem = await Model.create(item);
     res.status(201).json(newItem);
   } catch (err) {
-    if (err.name === "SequelizeValidationError") {
-      res.status(400).json({
-        success: false,
-        msg: err.errors.map((e) => e.message),
-      });
-    } else {
-      res.sendStatus(500).send(err);
-    }
+    res.status(400).json({
+      success: false,
+      msg: err.errors.map((e) => e.message),
+    });
   }
 };
 
@@ -46,7 +42,7 @@ const getItemById = async (res, model, id) => {
 
   if (!item) {
     // changed from sendStatus to status and added the error key
-    res.status(404).send({ error: "The reader could not be found." });
+    res.status(404).send({ error: "The item could not be found." });
   } else {
     res.status(200).json(item);
   }
@@ -61,7 +57,7 @@ const updateItem = async (res, model, item, id) => {
     });
 
     if (!updatedRows) {
-      res.status(404).send({ error: "The reader could not be found." });
+      res.status(404).send({ error: "The item could not be found." });
     } else {
       res.status(200).send();
     }
@@ -77,7 +73,7 @@ const deleteItem = async (res, model, id) => {
     const deletedRows = await Model.destroy({ where: { id: id } });
 
     if (!deletedRows) {
-      res.status(404).send({ error: "The reader could not be found." });
+      res.status(404).send({ error: "The item could not be found." });
     } else {
       res.status(204).send();
     }

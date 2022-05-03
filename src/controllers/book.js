@@ -1,76 +1,28 @@
-const { Book } = require("../models");
+const {
+  createItem,
+  getItems,
+  getItemById,
+  updateItem,
+  deleteItem,
+} = require("./helper");
 
-exports.create = async (req, res) => {
-  // platform example missing await
-  try {
-    const newBook = await Book.create(req.body);
-    res.status(201).json(newBook);
-  } catch (err) {
-    if (err.name === "SequelizeUniqueConstraintError") {
-      res.status(400).json({
-        success: false,
-        msg: err.errors.map((e) => e.message),
-      });
-    } else {
-      res.sendStatus(500).send(err);
-    }
-  }
-};
+const createBooks = (req, res) => createItem(res, "book", req.body);
 
-exports.read = async (_, res) => {
-  const books = await Book.findAll();
+const getBooks = (_, res) => getItems(res, "book");
 
-  if (!books) {
-    res.sendStatus(404);
-  } else {
-    res.status(200).json(books);
-  }
-};
+const getBookById = (req, res) =>
+  getItemById(res, "book", req.params.bookId);
 
-exports.readById = async (req, res) => {
-  const { bookId } = req.params;
-  const book = await Book.findByPk(bookId);
+const updateBook = (req, res) =>
+  updateItem(res, "book", req.body, req.params.bookId);
 
-  if (!book) {
-    // changed from sendStatus to status and added the error key
-    res.status(404).send({ error: "The book could not be found." });
-  } else {
-    res.status(200).json(book);
-  }
-};
+const deleteBook = (req, res) =>
+  deleteItem(res, "book", req.params.bookId);
 
-// patches an existing artist by Id
-exports.update = async (req, res) => {
-  const updateData = req.body;
-  const { bookId } = req.params;
-
-  try {
-    const [updatedRows] = await Book.update(updateData, {
-      where: { id: bookId },
-    });
-
-    if (!updatedRows) {
-      res.status(404).send({ error: "The book could not be found." });
-    } else {
-      res.status(200).send();
-    }
-  } catch (err) {
-    res.sendStatus(500);
-  }
-};
-
-exports.delete = async (req, res) => {
-  const { bookId } = req.params;
-
-  try {
-    const deletedRows = await Book.destroy({ where: { id: bookId } });
-
-    if (!deletedRows) {
-      res.status(404).send({ error: "The book could not be found." });
-    } else {
-      res.status(204).send();
-    }
-  } catch (err) {
-    res.sendStatus(500);
-  }
+module.exports = {
+  createBooks,
+  getBooks,
+  getBookById,
+  updateBook,
+  deleteBook,
 };
