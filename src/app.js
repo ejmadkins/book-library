@@ -6,10 +6,10 @@ const app = express();
 app.use(express.json());
 module.exports = app;
 
-app.post("/readers", readerController.create);
-app.get("/readers", readerController.read);
-app.get("/readers/:readerId", readerController.readById);
-app.patch("/readers/:readerId", readerController.update);
-app.delete("/readers/:readerId", readerController.delete);
+app.post("/readers", readerController.createReaders);
+app.get("/readers", readerController.getReaders);
+app.get("/readers/:readerId", readerController.getReaderById);
+app.patch("/readers/:readerId", readerController.updateReader);
+app.delete("/readers/:readerId", readerController.deleteReader);
 
 app.use("/books", bookRouter);
