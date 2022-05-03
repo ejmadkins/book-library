@@ -35,39 +35,15 @@ describe("/books", () => {
         expect(newBookRecord.genre).to.equal("Sci-Fi");
         expect(newBookRecord.ISBN).to.equal("0-671-62964-6");
       });
-      it("validates unique title", async () => {
-        books = await Book.create({
-          title: "The Hitchhiker's Guide to the Galaxy",
-          author: "Douglas Adams",
-          genre: "Sci-Fi",
-          ISBN: "0-671-62964-6",
-        });
-
-        const response = await request(app).post("/books").send({
-          title: "The Hitchhiker's Guide to the Galaxy2",
-          author: "Douglas Adams",
-          genre: "Sci-Fi",
-          ISBN: "0-671-62964-6",
+      it("cannot create a book if there is no author or title", async () => {
+        const response = await request(app).post("/books").send({});
+        const newBookRecord = await Book.findByPk(response.body.id, {
+          raw: true,
         });
 
         expect(response.status).to.equal(400);
-      });
-      it("validates unique author", async () => {
-        books = await Book.create({
-          title: "The Hitchhiker's Guide to the Galaxy",
-          author: "Douglas Adams",
-          genre: "Sci-Fi",
-          ISBN: "0-671-62964-6",
-        });
-
-        const response = await request(app).post("/books").send({
-          title: "The Hitchhiker's Guide to the Galaxy",
-          author: "Douglas Adams2",
-          genre: "Sci-Fi",
-          ISBN: "0-671-62964-6",
-        });
-
-        expect(response.status).to.equal(400);
+        expect(response.body.errors.length).to.equal(2);
+        expect(newBookRecord).to.equal(null);
       });
     });
   });

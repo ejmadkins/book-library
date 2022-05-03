@@ -16,10 +16,9 @@ const createItem = async (res, model, item) => {
     const newItem = await Model.create(item);
     res.status(201).json(newItem);
   } catch (err) {
-    res.status(400).json({
-      success: false,
-      msg: err.errors.map((e) => e.message),
-    });
+    const errorMessages = err.errors.map((e) => e.message);
+
+    res.status(400).json({ errors: errorMessages });
   }
 };
 
