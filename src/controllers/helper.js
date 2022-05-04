@@ -1,9 +1,19 @@
-const { Book, Reader } = require("../models");
+const { Book, Reader, Genre, Author } = require("../models");
+
+const getIncludes = (model) => {
+  if (model === "book") {
+    return { include: [Genre, Author, Reader] };
+  } else {
+    return { include: Book };
+  }
+};
 
 const getModel = (model) => {
   const models = {
     book: Book,
     reader: Reader,
+    genre: Genre,
+    author: Author,
   };
 
   return models[model];
@@ -25,7 +35,11 @@ const createItem = async (res, model, item) => {
 const getItems = async (res, model) => {
   const Model = getModel(model);
 
-  const items = await Model.scope("excludePassword").findAll();
+  const includes = getIncludes(model);
+
+  const items = await Model.scope("excludePassword").findAll({
+    ...includes,
+  });
 
   if (!items) {
     res.sendStatus(404);
@@ -37,7 +51,11 @@ const getItems = async (res, model) => {
 const getItemById = async (res, model, id) => {
   const Model = getModel(model);
 
-  const item = await Model.scope("excludePassword").findByPk(id);
+  const includes = getIncludes(model);
+
+  const item = await Model.scope("excludePassword").findByPk(id, {
+    ...includes,
+  });
 
   if (!item) {
     // changed from sendStatus to status and added the error key

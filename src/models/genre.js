@@ -1,30 +1,28 @@
 /* src/models/book.js */
 module.exports = (connection, DataTypes) => {
   const schema = {
-    title: {
+    genre: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: false,
       validation: {
         notNull: {
           args: [true],
-          msg: "We need a book title",
+          msg: "We need a book genre",
         },
         notEmpty: {
           args: [true],
-          msg: "The book title cannot be empty",
+          msg: "The book genre cannot be empty",
         },
       },
     },
-    ISBN: {
-      type: DataTypes.STRING,
-    },
   };
-  const BookModel = connection.define("Book", schema, {
+  const GenreModel = connection.define("Genre", schema, {
     scopes: {
       excludePassword: {
         attributes: { exclude: ["password"] },
       },
     },
   });
-  return BookModel;
+  return GenreModel;
 };
