@@ -32,7 +32,7 @@ describe("/authors", () => {
         });
 
         expect(response.status).to.equal(400);
-        expect(response.body.errors.length).to.equal(2);
+        expect(response.body.errors.length).to.equal(1);
         expect(newAuthorRecord).to.equal(null);
       });
     });
@@ -89,17 +89,17 @@ describe("/authors", () => {
     });
 
     describe("PATCH /authors/:id", () => {
-      it("updates authors ISBN by id", async () => {
+      it("updates authors author by id", async () => {
         const author = authors[0];
         const response = await request(app)
           .patch(`/authors/${author.id}`)
-          .send({ author: "Fantasy" });
+          .send({ author: "J. R. R. Tolkien" });
         const updatedAuthorRecord = await Author.findByPk(author.id, {
           raw: true,
         });
 
         expect(response.status).to.equal(200);
-        expect(updatedAuthorRecord.ISBN).to.equal("Fantasy");
+        expect(updatedAuthorRecord.author).to.equal("J. R. R. Tolkien");
       });
 
       it("returns a 404 if the author does not exist", async () => {

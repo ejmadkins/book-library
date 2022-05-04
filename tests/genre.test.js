@@ -32,7 +32,7 @@ describe("/genres", () => {
         });
 
         expect(response.status).to.equal(400);
-        expect(response.body.errors.length).to.equal(2);
+        expect(response.body.errors.length).to.equal(1);
         expect(newGenreRecord).to.equal(null);
       });
     });
@@ -89,7 +89,7 @@ describe("/genres", () => {
     });
 
     describe("PATCH /genres/:id", () => {
-      it("updates genres ISBN by id", async () => {
+      it("updates genres genre by id", async () => {
         const genre = genres[0];
         const response = await request(app)
           .patch(`/genres/${genre.id}`)
@@ -99,7 +99,7 @@ describe("/genres", () => {
         });
 
         expect(response.status).to.equal(200);
-        expect(updatedGenreRecord.ISBN).to.equal("Fantasy");
+        expect(updatedGenreRecord.genre).to.equal("Fantasy");
       });
 
       it("returns a 404 if the genre does not exist", async () => {

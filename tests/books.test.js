@@ -16,8 +16,6 @@ describe("/books", () => {
       it("creates a new book in the database", async () => {
         const response = await request(app).post("/books").send({
           title: "The Hitchhiker's Guide to the Galaxy",
-          author: "Douglas Adams",
-          genre: "Sci-Fi",
           ISBN: "0-671-62964-6",
         });
         const newBookRecord = await Book.findByPk(response.body.id, {
@@ -32,7 +30,6 @@ describe("/books", () => {
           "The Hitchhiker's Guide to the Galaxy"
         );
         expect(newBookRecord.author).to.equal("Douglas Adams");
-        expect(newBookRecord.genre).to.equal("Sci-Fi");
         expect(newBookRecord.ISBN).to.equal("0-671-62964-6");
       });
       it("cannot create a book if there is no author or title", async () => {
