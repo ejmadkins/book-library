@@ -29,7 +29,6 @@ describe("/books", () => {
         expect(newBookRecord.title).to.equal(
           "The Hitchhiker's Guide to the Galaxy"
         );
-        expect(newBookRecord.author).to.equal("Douglas Adams");
         expect(newBookRecord.ISBN).to.equal("0-671-62964-6");
       });
       it("cannot create a book if there is no author or title", async () => {
@@ -39,7 +38,7 @@ describe("/books", () => {
         });
 
         expect(response.status).to.equal(400);
-        expect(response.body.errors.length).to.equal(2);
+        expect(response.body.errors.length).to.equal(1);
         expect(newBookRecord).to.equal(null);
       });
     });
@@ -54,21 +53,15 @@ describe("/books", () => {
       books = await Promise.all([
         Book.create({
           title: "The Hitchhiker's Guide to the Galaxy",
-          author: "Douglas Adams",
-          genre: "Sci-Fi",
           ISBN: "0-671-62964-6",
         }),
         Book.create({
-          title: "The Hitchhiker's Guide to the Galaxy2",
-          author: "Douglas Adams2",
-          genre: "Sci-Fi",
-          ISBN: "0-671-62964-6",
+          title: "The Shining",
+          ISBN: "978-0-385-12167-5",
         }),
         Book.create({
-          title: "The Hitchhiker's Guide to the Galaxy3",
-          author: "Douglas Adams3",
-          genre: "Sci-Fi",
-          ISBN: "0-671-62964-6",
+          title: "Harry Potter and the Goblet of Fire",
+          ISBN: "0-7475-4624-X",
         }),
       ]);
     });
@@ -84,8 +77,6 @@ describe("/books", () => {
           const expected = books.find((a) => a.id === book.id);
 
           expect(book.title).to.equal(expected.title);
-          expect(book.author).to.equal(expected.author);
-          expect(book.genre).to.equal(expected.genre);
           expect(book.ISBN).to.equal(expected.ISBN);
         });
       });
@@ -100,8 +91,6 @@ describe("/books", () => {
         expect(response.body.title).to.equal(
           "The Hitchhiker's Guide to the Galaxy"
         );
-        expect(response.body.author).to.equal("Douglas Adams");
-        expect(response.body.genre).to.equal("Sci-Fi");
         expect(response.body.ISBN).to.equal("0-671-62964-6");
       });
 
