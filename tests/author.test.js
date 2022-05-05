@@ -14,18 +14,17 @@ describe("/authors", () => {
 
   describe("with no records in the database", () => {
     describe("POST /authors", () => {
-      // it("creates a new author in the database", async () => {
-      //   const response = await request(app)
-      //     .post("/authors")
-      //     .send(dataFactory.Author);
-      //   const newAuthorRecord = await Author.findByPk(response.body.id, {
-      //     raw: true,
-      //   });
+      it("creates a new author in the database", async () => {
+        const getAuthor = dataFactory.authorsData();
+        const response = await request(app).post("/authors").send(getAuthor);
+        const newAuthorRecord = await Author.findByPk(response.body.id, {
+          raw: true,
+        });
 
-      //   expect(response.status).to.equal(201);
-      //   expect(response.body.author).to.equal("Douglas Adams");
-      //   expect(newAuthorRecord.author).to.equal("Douglas Adams");
-      // });
+        expect(response.status).to.equal(201);
+        expect(response.body.author).to.equal(getAuthor.author);
+        expect(newAuthorRecord.author).to.equal(getAuthor.author);
+      });
       it("cannot create a author if there is no author or title", async () => {
         const response = await request(app).post("/authors").send({});
         const newAuthorRecord = await Author.findByPk(response.body.id, {
