@@ -17,6 +17,17 @@ module.exports = (connection, DataTypes) => {
     },
     ISBN: {
       type: DataTypes.STRING,
+      allowNull: false,
+      validation: {
+        notNull: {
+          args: [true],
+          msg: "We need an ISBN",
+        },
+        notEmpty: {
+          args: [true],
+          msg: "The ISBN cannot be empty",
+        },
+      },
     },
   };
   const BookModel = connection.define("Book", schema, {

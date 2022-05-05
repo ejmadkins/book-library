@@ -38,7 +38,7 @@ describe("/books", () => {
         });
 
         expect(response.status).to.equal(400);
-        expect(response.body.errors.length).to.equal(1);
+        expect(response.body.errors.length).to.equal(2);
         expect(newBookRecord).to.equal(null);
       });
     });
